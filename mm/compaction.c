@@ -1858,8 +1858,9 @@ static void compact_node(int nid)
 		VM_BUG_ON(!list_empty(&cc.migratepages));
 	}
 }
-
+#ifdef CONFIG_BTREE
 extern void zswap_compact(void);
+#endif
 /* Compact all nodes in the system */
 static void compact_nodes(void)
 {
@@ -1870,8 +1871,10 @@ static void compact_nodes(void)
 
 	for_each_online_node(nid)
 		compact_node(nid);
-
+		
+#ifdef CONFIG_BTREE
 	zswap_compact();
+#endif
 }
 
 /* The written value is actually unused, all memory is compacted */
