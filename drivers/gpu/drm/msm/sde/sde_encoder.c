@@ -4835,6 +4835,7 @@ void sde_encoder_kickoff(struct drm_encoder *drm_enc, bool is_error)
 		struct dsi_bridge *c_bridge = container_of((drm_enc->bridge), struct dsi_bridge, base);
 		if (c_bridge && c_bridge->display && c_bridge->display->panel)
 			c_bridge->display->panel->kickoff_count++;
+	}
 
 	/*
 	 * Trigger a panel reset if this is the first kickoff and the refresh
