@@ -56,16 +56,7 @@ static unsigned int get_max_boost_freq(struct cpufreq_policy *policy)
 
 static unsigned int get_min_freq(struct cpufreq_policy *policy)
 {
-	unsigned int freq;
-
-	if (cpumask_test_cpu(policy->cpu, cpu_lp_mask))
-		freq = CONFIG_CPU_FREQ_DEFAULT_LITTLE_MIN;
-	else if (cpumask_test_cpu(policy->cpu, cpu_perf_mask))
-		freq = CONFIG_CPU_FREQ_DEFAULT_BIG_MIN;
-	else
-		freq = CONFIG_CPU_FREQ_DEFAULT_PRIME_MIN;
-
-	return max(freq, policy->cpuinfo.min_freq);
+	return max(policy->min, policy->cpuinfo.min_freq);
 }
 
 static void update_online_cpu_policy(void)
