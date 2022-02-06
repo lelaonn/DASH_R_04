@@ -40,6 +40,7 @@ static unsigned short wake_boost_duration __read_mostly =
 	CONFIG_WAKE_BOOST_DURATION_MS;
 	
 static unsigned short dynamic_stune_boost __read_mostly = 1;
+static int boost_slot;
 	
 static bool dynamic_sched_boost __read_mostly = true;
 
@@ -138,7 +139,7 @@ static void __cpu_input_boost_kick(struct boost_drv *b)
 	set_bit(INPUT_BOOST, &b->state);
 	
 	#ifdef CONFIG_DYNAMIC_STUNE_BOOST
-	do_stune_boost("top-app", dynamic_stune_boost);
+	do_stune_boost("top-app", dynamic_stune_boost, &boost_slot);
 	#endif
 	
 	if (dynamic_sched_boost)
@@ -167,7 +168,7 @@ static void __cpu_input_boost_kick_max(struct boost_drv *b,
 	do_hp_cpuset();
 
 	#ifdef CONFIG_DYNAMIC_STUNE_BOOST
-	do_stune_boost("top-app", dynamic_stune_boost);
+	do_stune_boost("top-app", dynamic_stune_boost, &boost_slot);
 	#endif
 
 	do {
@@ -204,7 +205,7 @@ static void input_unboost_worker(struct work_struct *work)
 	wake_up(&b->boost_waitq);
 	
 	#ifdef CONFIG_DYNAMIC_STUNE_BOOST
-	reset_stune_boost("top-app");
+	reset_stune_boost("top-app", boost_slot);
 	#endif
 }
 
@@ -219,7 +220,7 @@ static void max_unboost_worker(struct work_struct *work)
 	do_lp_cpuset();
 	
 	#ifdef CONFIG_DYNAMIC_STUNE_BOOST
-	reset_stune_boost("top-app");
+	reset_stune_boost("top-app", boost_slot);
 	#endif
 }
 
@@ -355,7 +356,7 @@ static void cpu_input_boost_input_disconnect(struct input_handle *handle)
 	do_lp_cpuset();
 	
 	#ifdef CONFIG_DYNAMIC_STUNE_BOOST
-	reset_stune_boost("top-app");
+	reset_stune_boost("top-app", boost_slot);
 	#endif
 	
 	if (dynamic_sched_boost)
