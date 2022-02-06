@@ -142,7 +142,7 @@ static struct cpuset *display_cpuset;
 static bool need_hp;
 static struct work_struct dynamic_cpuset_work;
 
-#ifdef CONFIG_CPUSET_ASSIST
+#ifdef CONFIG_CPUSETS_ASSIST
 struct cs_target {
 	const char *name;
 	char *cpus;
