@@ -39,8 +39,10 @@ static unsigned short input_boost_duration __read_mostly =
 static unsigned short wake_boost_duration __read_mostly =
 	CONFIG_WAKE_BOOST_DURATION_MS;
 	
+#ifdef CONFIG_DYNAMIC_STUNE_BOOST
 static unsigned short dynamic_stune_boost __read_mostly = 1;
 static int boost_slot;
+#endif
 	
 static bool dynamic_sched_boost __read_mostly = true;
 
@@ -54,7 +56,9 @@ module_param(max_boost_freq_prime, uint, 0644);
 module_param(input_boost_duration, short, 0644);
 module_param(wake_boost_duration, short, 0644);
 
+#ifdef CONFIG_DYNAMIC_STUNE_BOOST
 module_param(dynamic_stune_boost, short, 0644);
+#endif
 
 module_param(dynamic_sched_boost, bool, 0644);
 
